@@ -2,10 +2,10 @@ import 'package:mysql1/mysql1.dart';
 import '../models/alumno.dart';
 
 class DatabaseService {
-  static const String _host = '10.0.2.2'; // IP especial para emulador Android
+  static const String _host = '34.59.177.251'; // IP especial para emulador Android
   static const int _port = 3306;
-  static const String _user = 'root';
-  static const String _password = '';
+  static const String _user = 'admin_negocios';
+  static const String _password = 'Maybeyes13!';
   static const String _db = 'escuela_db';
 
   // Configuración de conexión MySQL
@@ -75,17 +75,28 @@ class DatabaseService {
       
       return results.map((row) => Alumno.fromJson({
         'id': row['id'],
-        'nombres': row['nombres'],
-        'apellidos': row['apellidos'],
-        'codigo': row['codigo'],
-        'direccion': row['direccion'],
-        'numero': row['numero'],
+        'nombres': _convertToString(row['nombres']),
+        'apellidos': _convertToString(row['apellidos']),
+        'codigo': _convertToString(row['codigo']),
+        'direccion': _convertToString(row['direccion']),
+        'numero': _convertToString(row['numero']),
       })).toList();
     } catch (e) {
       throw Exception('Error al obtener alumnos: $e');
     } finally {
       await conn?.close();
     }
+  }
+
+  // Helper para convertir Blob a String si es necesario
+  static String _convertToString(dynamic value) {
+    if (value == null) return '';
+    if (value is String) return value;
+    if (value is List<int>) {
+      // Si es un Blob (List<int>), convertir a String
+      return String.fromCharCodes(value);
+    }
+    return value.toString();
   }
 
   // Obtener un alumno por ID
@@ -100,11 +111,11 @@ class DatabaseService {
       final row = results.first;
       return Alumno.fromJson({
         'id': row['id'],
-        'nombres': row['nombres'],
-        'apellidos': row['apellidos'],
-        'codigo': row['codigo'],
-        'direccion': row['direccion'],
-        'numero': row['numero'],
+        'nombres': _convertToString(row['nombres']),
+        'apellidos': _convertToString(row['apellidos']),
+        'codigo': _convertToString(row['codigo']),
+        'direccion': _convertToString(row['direccion']),
+        'numero': _convertToString(row['numero']),
       });
     } catch (e) {
       throw Exception('Error al obtener alumno: $e');
@@ -204,11 +215,11 @@ class DatabaseService {
       
       return results.map((row) => Alumno.fromJson({
         'id': row['id'],
-        'nombres': row['nombres'],
-        'apellidos': row['apellidos'],
-        'codigo': row['codigo'],
-        'direccion': row['direccion'],
-        'numero': row['numero'],
+        'nombres': _convertToString(row['nombres']),
+        'apellidos': _convertToString(row['apellidos']),
+        'codigo': _convertToString(row['codigo']),
+        'direccion': _convertToString(row['direccion']),
+        'numero': _convertToString(row['numero']),
       })).toList();
     } catch (e) {
       throw Exception('Error al buscar alumnos: $e');
